@@ -1,0 +1,8 @@
+{
+  "uuid": "network-speed@local",
+  "name": "Network Speed",
+  "description": "Shows download speed in the top bar. Hover for upload speed. Click for details.",
+  "version": 1,
+  "shell-version": ["45", "46", "47", "48", "49"],
+  "url": ""
+}
