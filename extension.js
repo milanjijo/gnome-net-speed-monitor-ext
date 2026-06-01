@@ -68,18 +68,15 @@ export default class NetworkSpeedExtension extends Extension {
         // Popup menu items (non-interactive, just display info)
         this._dlItem = new PopupMenu.PopupMenuItem('↓ --', {reactive: false});
         this._ulItem = new PopupMenu.PopupMenuItem('↑ --', {reactive: false});
+        this._dlItem.label.style = 'color: #ffffff';
+        this._ulItem.label.style = 'color: #ffffff';
         this._indicator.menu.addMenuItem(this._dlItem);
         this._indicator.menu.addMenuItem(this._ulItem);
-
-        // Hover: expand/collapse the bar label
-        this._indicator.connect('enter-event', () => this._showBoth());
-        this._indicator.connect('leave-event', () => this._showDownOnly());
 
         Main.panel.addToStatusArea(this.uuid, this._indicator);
 
         this._dlSpeed = 0;
         this._ulSpeed = 0;
-        this._hovering = false;
 
         // Bootstrap: take an initial reading so the first tick has a valid delta
         this._prevStats = readNetStats();
@@ -129,24 +126,9 @@ export default class NetworkSpeedExtension extends Extension {
         this._dlItem.label.text = `↓ ${formatSpeed(dlSpeed)}`;
         this._ulItem.label.text = `↑ ${formatSpeed(ulSpeed)}`;
 
-        if (this._hovering)
-            this._showBoth();
-        else
-            this._showDownOnly();
+        this._label.text = `↓ ${formatSpeed(dlSpeed)}`;
 
         this._prevStats = stats;
         this._prevTime = now;
-    }
-
-    _showDownOnly() {
-        this._hovering = false;
-        if (this._label)
-            this._label.text = `↓ ${formatSpeed(this._dlSpeed)}`;
-    }
-
-    _showBoth() {
-        this._hovering = true;
-        if (this._label)
-            this._label.text = `↓ ${formatSpeed(this._dlSpeed)} ↑ ${formatSpeed(this._ulSpeed)}`;
     }
 }
